@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useCollection } from "react-firebase-hooks/firestore";
-import { db } from "../firebase";
+import { db, auth } from "../firebase";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import CreateIcon from "@material-ui/icons/Create";
 import {
@@ -17,9 +17,12 @@ import {
   Add,
 } from "@material-ui/icons";
 import SidebarOption from "./SidebarOption";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 function Sidebar() {
-  const [channels, loading, error] = useCollection(db.collection("rooms"));
+  const [channels] = useCollection(db.collection("rooms"));
+
+  const [user] = useAuthState(auth);
 
   return (
     <SidebarContainer>
@@ -28,7 +31,7 @@ function Sidebar() {
           <h2>Good people</h2>
           <h3>
             <FiberManualRecordIcon />
-            Vitaly Hope
+            {user.displayName}
           </h3>
         </SidebarInfo>
         <CreateIcon />
